@@ -1,5 +1,7 @@
 package umik.common;
 
+import org.springframework.batch.item.ItemReader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +11,8 @@ import umik.persistance.StopService;
 
 @RestController
 public class StopController {
+	@Autowired
+	ItemReader<TrainDTO> restTrainReader;
 
 	@RequestMapping("/stop")
 	public Stop stopInfo(@RequestParam(value = "id", defaultValue = "100") String id) {
@@ -25,7 +29,13 @@ public class StopController {
 	}
 	
 	@RequestMapping("/test")
-	public String test() {
-		return "Testing!";
+	public TrainDTO test() {
+		
+		try {
+			return restTrainReader.read();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
