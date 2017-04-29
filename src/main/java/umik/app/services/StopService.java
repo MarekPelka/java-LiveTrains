@@ -1,6 +1,10 @@
-package umik.persistance;
+package umik.app.services;
 
 import java.util.List;
+
+import umik.app.model.Stop;
+import umik.app.dao.StopDAO;
+
 
 public class StopService {
 	private static StopDAO stopDAO;

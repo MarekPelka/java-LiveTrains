@@ -1,4 +1,4 @@
-package umik.persistance;
+package umik.app.model;
 
 import java.io.Serializable;
 import java.sql.Date;

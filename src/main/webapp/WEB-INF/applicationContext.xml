@@ -12,15 +12,11 @@
  http://www.springframework.org/schema/context 
  http://www.springframework.org/schema/context/spring-context-4.0.xsd
  http://www.springframework.org/schema/data/jpa 
- http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd
- http://www.springframework.org/schema/security
- http://www.springframework.org/schema/security/spring-security.xsd">
-
-
-	<context:component-scan base-package="umik" />
-	<context:annotation-config />
+ http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd">
 
 	<mvc:annotation-driven />
+	<context:component-scan base-package="umik" />
+	<context:annotation-config />
 
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -32,11 +28,6 @@
 				<property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
 			</bean>
 		</property>
-		<property name="jpaProperties">
-			<props>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
-			</props>
-		</property>
 	</bean>
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -46,12 +37,6 @@
 		<property name="username" value="admin" />
 		<property name="password" value="Amazonroot" />
 	</bean>
-	
-	<bean id="userValidator" class="umik.validators.UserValidator"></bean>
-	<bean id="validator"
-		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
-	<bean
-		class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor" />
 	<bean
 		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 	<bean
@@ -59,8 +44,5 @@
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
-	<bean id="StopService" class="umik.persistance.StopService">
-        <property name="transactionManager" ref="myTxManager"/>
-        <property name="umik.persistance.StopDAO" ref="umik.persistance.Stop"/>
-    </bean>
+
 </beans>

@@ -1,4 +1,4 @@
-package umik.persistance;
+package umik.app.dao;
 
 import java.util.List;
 
@@ -9,6 +9,9 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 //import org.springframework.stereotype.Repository;
 //import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import umik.app.interf.StopDAOInterface;
+import umik.app.model.Stop;
 
 public class StopDAO implements StopDAOInterface<Stop, Integer>{
 

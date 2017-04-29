@@ -1,4 +1,4 @@
-package umik.common;
+package umik.app.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class ScheduledTasks {
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-	@Scheduled(fixedRate = 5000)
+	@Scheduled(fixedRate = 30000)
 	public void reportCurrentTime() {
 		System.out.println("The time is now " + dateFormat.format(new Date()));
 	}

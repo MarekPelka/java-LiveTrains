@@ -1,4 +1,4 @@
-package umik.persistance;
+package umik.app.interf;
 
 import java.io.Serializable;
 import java.util.List;
