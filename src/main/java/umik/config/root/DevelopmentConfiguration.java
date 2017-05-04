@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 public class DevelopmentConfiguration {
-
+	
 	@Bean(name = "datasource")
 	public DriverManagerDataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -25,12 +25,13 @@ public class DevelopmentConfiguration {
 		return dataSource;
 	}
 
+	
 	@Bean(name = "entityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DriverManagerDataSource dataSource) {
 
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		entityManagerFactoryBean.setDataSource(dataSource);
-		entityManagerFactoryBean.setPackagesToScan(new String[] { "umik" });
+		entityManagerFactoryBean.setPackagesToScan(new String[] { "umik.app.model" });
 		entityManagerFactoryBean.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
 		entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
