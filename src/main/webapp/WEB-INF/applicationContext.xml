@@ -18,7 +18,7 @@
 	<context:component-scan base-package="umik" />
 	<context:annotation-config />
 
-	<bean id="entityManagerFactory"
+	<!--<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan" value="umik.model" />
@@ -36,7 +36,7 @@
 			value="jdbc:mysql://umik.cb2bxn4cggik.us-west-2.rds.amazonaws.com:3306/umikproject" />
 		<property name="username" value="admin" />
 		<property name="password" value="Amazonroot" />
-	</bean>
+	</bean>-->
 	<bean
 		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 	<bean
