@@ -7,8 +7,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 //import org.springframework.stereotype.Repository;
 //import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 
 import umik.app.interf.StopDAOInterface;
 import umik.app.model.Stop;
@@ -42,6 +45,8 @@ public class StopDAO implements StopDAOInterface<Stop, Integer>{
 		currentSession.close();
 	}
 	
+//	@Autowired
+//	@Bean(name = "sessionFactory")
 	private static SessionFactory getSessionFactory() {
 		Configuration configuration = new Configuration().configure()
 				.addAnnotatedClass(Stop.class);
@@ -49,6 +54,11 @@ public class StopDAO implements StopDAOInterface<Stop, Integer>{
 				.applySettings(configuration.getProperties());
 		SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
 		return sessionFactory;
+//		LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
+//
+//		sessionBuilder.addAnnotatedClasses(Stop.class);
+//
+//		return sessionBuilder.buildSessionFactory();
 	}
 
 	public Session getCurrentSession() {
