@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="train")
-public class Train implements Serializable{
+@Table(name="train_history")
+public class TrainHistory implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,9 +38,9 @@ public class Train implements Serializable{
 	@Column(name = "brigade", nullable = false, columnDefinition = "varchar(30)")
 	private String brigade;
 	
-	public Train() {}
+	public TrainHistory() {}
 	
-	public Train(String status, String firstLine, double lon, String lines, String time, double lat, boolean lowFloor,
+	public TrainHistory(String status, String firstLine, double lon, String lines, String time, double lat, boolean lowFloor,
 			String brigade) {
 		this.status = status;
 		this.firstLine = firstLine;

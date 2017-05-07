@@ -1,13 +1,12 @@
 package umik.app.dao;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
-@Repository
-public class TrainDAO {
+import umik.app.model.Train;
 
-	@Autowired
-	private SessionFactory _sessionFactory;
-
+public interface TrainDAO {
+	
+	public void saveList(List<Train> list);
+	public void truncate();
+	public Train findByLineNoBrigade(String lineNo, String brigade);
 }

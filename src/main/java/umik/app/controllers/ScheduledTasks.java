@@ -1,17 +1,29 @@
 package umik.app.controllers;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import umik.app.model.Train;
+import umik.app.services.ApiService;
+import umik.app.services.TrainService;
+
 @Component
 public class ScheduledTasks {
-	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	
+	@Autowired
+	private ApiService apiService;
 
-	@Scheduled(fixedRate = 30000)
+	@Autowired
+	private TrainService trainService;
+	
+	@Scheduled(cron = "${api.to.database.job.cron}")
 	public void reportCurrentTime() {
-		System.out.println("The time is now " + dateFormat.format(new Date()));
+		
+		List<Train> listTrain = apiService.pullDataFromApi();
+		trainService.saveApiInTwoTables(listTrain);
+		System.out.println(listTrain.get(0));
 	}
 }

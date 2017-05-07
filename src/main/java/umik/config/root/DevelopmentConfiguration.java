@@ -36,6 +36,9 @@ public class DevelopmentConfiguration {
   
   @Value("${hibernate.hbm2ddl.auto}")
   private String HIBERNATE_HBM2DDL_AUTO;
+  
+  @Value("${hibernate.jdbc.batch_size}")
+  private String HIBERNATE_JDBC_BATCH_SIZE;
 
   @Value("${entitymanager.packagesToScan}")
   private String ENTITYMANAGER_PACKAGES_TO_SCAN;
@@ -59,6 +62,7 @@ public class DevelopmentConfiguration {
     hibernateProperties.put("hibernate.dialect", HIBERNATE_DIALECT);
     hibernateProperties.put("hibernate.show_sql", HIBERNATE_SHOW_SQL);
     hibernateProperties.put("hibernate.hbm2ddl.auto", HIBERNATE_HBM2DDL_AUTO);
+    hibernateProperties.put("hibernate.jdbc.batch_size", HIBERNATE_JDBC_BATCH_SIZE);
     sessionFactoryBean.setHibernateProperties(hibernateProperties);
     
     return sessionFactoryBean;
