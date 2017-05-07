@@ -2,108 +2,56 @@ package umik.app.dao;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.StatelessSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-//import org.springframework.stereotype.Repository;
-//import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
+import org.springframework.stereotype.Repository;
 
-import umik.app.interf.StopDAOInterface;
 import umik.app.model.Stop;
 
-public class StopDAO implements StopDAOInterface<Stop, Integer>{
+@Repository
+@Transactional
+public class StopDAO {
 
-	private Session currentSession;
+	@Autowired
+	private SessionFactory _sessionFactory;
+
+	public Stop findById(int fooId) {
+        StatelessSession session = _sessionFactory.openStatelessSession();
+        Stop foo = (Stop) session.get(Stop.class, fooId);
+        session.close();
+        return foo;
+    }
 	
-	private Transaction currentTransaction;
-
-	public StopDAO() {
+	private Session getSession() {
+		return _sessionFactory.getCurrentSession();
 	}
 
-	public Session openCurrentSession() {
-		currentSession = getSessionFactory().openSession();
-		return currentSession;
+	public void save(Stop Stop) {
+		getSession().save(Stop);
+		return;
 	}
 
-	public Session openCurrentSessionwithTransaction() {
-		currentSession = getSessionFactory().openSession();
-		currentTransaction = currentSession.beginTransaction();
-		return currentSession;
-	}
-	
-	public void closeCurrentSession() {
-		currentSession.close();
-	}
-	
-	public void closeCurrentSessionwithTransaction() {
-		currentTransaction.commit();
-		currentSession.close();
-	}
-	
-//	@Autowired
-//	@Bean(name = "sessionFactory")
-	private static SessionFactory getSessionFactory() {
-		Configuration configuration = new Configuration().configure()
-				.addAnnotatedClass(Stop.class);
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
-				.applySettings(configuration.getProperties());
-		SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
-		return sessionFactory;
-//		LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
-//
-//		sessionBuilder.addAnnotatedClasses(Stop.class);
-//
-//		return sessionBuilder.buildSessionFactory();
-	}
-
-	public Session getCurrentSession() {
-		return currentSession;
-	}
-
-	public void setCurrentSession(Session currentSession) {
-		this.currentSession = currentSession;
-	}
-
-	public Transaction getCurrentTransaction() {
-		return currentTransaction;
-	}
-
-	public void setCurrentTransaction(Transaction currentTransaction) {
-		this.currentTransaction = currentTransaction;
-	}
-
-	public void persist(Stop entity) {
-		getCurrentSession().save(entity);
-	}
-
-	public void update(Stop entity) {
-		getCurrentSession().update(entity);
-	}
-
-	public Stop findById(Integer id) {
-		Stop Stop = (Stop) getCurrentSession().get(Stop.class, id);
-		return Stop; 
-	}
-
-	public void delete(Stop entity) {
-		getCurrentSession().delete(entity);
+	public void delete(Stop Stop) {
+		getSession().delete(Stop);
+		return;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Stop> findAll() {
-		List<Stop> Stops = (List<Stop>) getCurrentSession().createQuery("from Stop").list();
-		return Stops;
+	public List<Stop> getAll() {
+		return getSession().createQuery("from Stop").list();
 	}
 
-	public void deleteAll() {
-		List<Stop> entityList = findAll();
-		for (Stop entity : entityList) {
-			delete(entity);
-		}
+	public Stop getById(long id) {
+		return (Stop) getSession().load(Stop.class, id);
 	}
+
+	public void update(Stop Stop) {
+		getSession().update(Stop);
+		return;
+	}
+
 }

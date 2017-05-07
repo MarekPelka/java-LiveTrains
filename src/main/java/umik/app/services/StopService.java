@@ -1,58 +1,27 @@
 package umik.app.services;
 
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import umik.app.model.Stop;
 import umik.app.dao.StopDAO;
+import umik.app.model.Stop;
 
-
+@Service
+@Configurable
 public class StopService {
-	private static StopDAO stopDAO;
 
-	public StopService() {
-		stopDAO = new StopDAO();
-	}
+	@Autowired
+	private StopDAO stopDAO;
+	
+    @Transactional(readOnly = true)
+    public Stop findStopById(long id) {
+        return stopDAO.getById(id);
+    }
 
-	public void persist(Stop entity) {
-		stopDAO.openCurrentSessionwithTransaction();
-		stopDAO.persist(entity);
-		stopDAO.closeCurrentSessionwithTransaction();
-	}
-
-	public void update(Stop entity) {
-		stopDAO.openCurrentSessionwithTransaction();
-		stopDAO.update(entity);
-		stopDAO.closeCurrentSessionwithTransaction();
-	}
-
-	public Stop findById(int id) {
-		stopDAO.openCurrentSession();
-		Stop Stop = stopDAO.findById(id);
-		stopDAO.closeCurrentSession();
-		return Stop;
-	}
-
-	public void delete(int id) {
-		stopDAO.openCurrentSessionwithTransaction();
-		Stop Stop = stopDAO.findById(id);
-		stopDAO.delete(Stop);
-		stopDAO.closeCurrentSessionwithTransaction();
-	}
-
-	public List<Stop> findAll() {
-		stopDAO.openCurrentSession();
-		List<Stop> Stops = stopDAO.findAll();
-		stopDAO.closeCurrentSession();
-		return Stops;
-	}
-
-	public void deleteAll() {
-		stopDAO.openCurrentSessionwithTransaction();
-		stopDAO.deleteAll();
-		stopDAO.closeCurrentSessionwithTransaction();
-	}
-
-	public StopDAO StopDAO() {
-		return stopDAO;
-	}
+//    @Transactional(readOnly = true)
+//    public Stop findTodaysCaloriesForUser(String username) {
+//        return userRepository.findTodaysCaloriesForUser(username);
+//}
 }
