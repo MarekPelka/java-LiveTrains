@@ -16,8 +16,6 @@ public class TrainDAOImpl implements TrainDAO{
 
 	@Autowired
 	private SessionFactory _sessionFactory;
-
-//BACH SIZE	
 	
 	@Override
 	public void saveList(List<Train> list) {

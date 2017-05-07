@@ -1,24 +1,31 @@
 package umik.app.impl;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import umik.app.dao.StopDAO;
+import umik.app.dao.LineDAO;
+import umik.app.model.Line;
 import umik.app.model.Stop;
 
 @Repository
-public class StopDAOImpl implements StopDAO {
+public class LineDAOImpl implements LineDAO{
 
 	@Autowired
 	private SessionFactory _sessionFactory;
 
 	@Override
-	public Stop findById(int id) {
+	public List<Line> findStopLine(int stopId) {
         StatelessSession session = _sessionFactory.openStatelessSession();
-        Stop foo = (Stop) session.get(Stop.class, id);
+        @SuppressWarnings("unchecked")
+		List<Line> foo = session.createQuery(
+                "from Line where stopId = :stopId")
+                .setParameter("stopId", stopId).list();
         session.close();
         return foo;
 	}
+
 }

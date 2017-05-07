@@ -19,11 +19,19 @@ public class ScheduledTasks {
 	@Autowired
 	private TrainService trainService;
 	
-	@Scheduled(cron = "${api.to.database.job.cron}")
-	public void reportCurrentTime() {
+	//@Scheduled(cron = "${api.to.database.job.cron}")
+	public void saveApiToDatabase() {
 		
 		List<Train> listTrain = apiService.pullDataFromApi();
 		trainService.saveApiInTwoTables(listTrain);
 		System.out.println(listTrain.get(0));
 	}
+	
+//	@Scheduled(cron = "${api.to.database.job.cron}")
+//	public void saveApiToDatabase() {
+//		
+//		List<Train> listTrain = apiService.pullDataFromApi();
+//		trainService.saveApiInTwoTables(listTrain);
+//		System.out.println(listTrain.get(0));
+//	}
 }

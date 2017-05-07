@@ -1,48 +1,97 @@
 package umik.app.controllers;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import umik.app.model.ApiResult;
+import umik.app.model.Line;
 import umik.app.model.Stop;
+import umik.app.model.Train;
+import umik.app.services.ApiService;
 import umik.app.services.StopService;
 
 @RestController
 @ComponentScan("umik")
+@RequestMapping("/stop")
 public class StopController {
-	
+
+	@Autowired
+	private ApiService apiService;
+
 	@Autowired
 	private StopService stopService;
 
-	@RequestMapping("/stop")
-	public Stop stopInfo(@RequestParam(value = "id", defaultValue = "100") String id) {
+	private Date lastcheck = null;
+	private List<Train> api = null;
+
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
+	public Stop stopInfo(@PathVariable String id) {
 
 		Stop s = null;
+		if (id == null)
+			id = "100";
 		try {
 			s = stopService.findStopById(Integer.parseInt(id));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return s;
 	}
-	
-	@RequestMapping("/test")
-	public ApiResult test() {
-		
+
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}/lines")
+	public List<Line> stopLines(@PathVariable String id) {
+
+		List<Line> s = null;
+		if (id == null)
+			id = "100";
 		try {
-			//TODO to co 10 s
-			//ApiResult quote = restTemplate.getForObject("https://api.um.warszawa.pl/api/action/wsstore_get/?id=c7238cfe-8b1f-4c38-bb4a-de386db7e776&apikey=382ec2fc-692c-4ef1-ad39-893065d6fad8", ApiResult.class);
-	        //System.out.println(quote.toString());
-	        //return quote;
-	        
-			//return restTrainReader.read();
+			s = stopService.findStopLines(Integer.parseInt(id));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return s;
+	}
+	
+	//TODO Consider - too many injections
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}/lines/info")
+	public List<Line> stopLinesInfo(@PathVariable String id) {
+
+		List<Line> s = null;
+		if (id == null)
+			id = "100";
+		try {
+			s = stopService.findStopLines(Integer.parseInt(id));
+			//TODO For s find schedule and one closest train;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return s;
+	}
+
+	@RequestMapping("/test")
+	public List<Train> test() {
+
+		List<Train> out = null;
+		List<Train> temp = null;
+		if (lastcheck == null || lastcheck.getTime() + 10000 < Calendar.getInstance().getTimeInMillis()) {
+			lastcheck = Calendar.getInstance().getTime();
+			temp = apiService.pullDataFromApi();
+			if(temp.size() != 0)
+				api = temp; 
+			System.out.println("Request to API WARSZAWA");
+		}
+
+		if (out == null)
+			out = api;
+		return out;
 	}
 }
