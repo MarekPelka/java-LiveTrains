@@ -15,7 +15,7 @@ public class Timetable implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "timetable_id", nullable = false)
 	public int id;
 	@Column(name = "stop_id", nullable = false, columnDefinition = "int(11)")

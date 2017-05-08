@@ -22,7 +22,7 @@ public class ScheduledTasks {
 	//@Scheduled(cron = "${api.to.database.job.cron}")
 	public void saveApiToDatabase() {
 		
-		List<Train> listTrain = apiService.pullDataFromApi();
+		List<Train> listTrain = apiService.pullTrainDataFromApi();
 		trainService.saveApiInTwoTables(listTrain);
 		System.out.println(listTrain.get(0));
 	}

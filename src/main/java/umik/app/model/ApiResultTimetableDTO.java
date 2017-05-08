@@ -4,20 +4,20 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import umik.app.dto.TrainDTO;
+import umik.app.dto.TimetableDTO;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ApiResult {
+public class ApiResultTimetableDTO {
 
-	private List<TrainDTO> result;
+	private List<TimetableDTO> result;
 	
-	public ApiResult() {}
+	public ApiResultTimetableDTO() {}
 
-	public List<TrainDTO> getResult() {
+	public List<TimetableDTO> getResult() {
 		return result;
 	}
 
-	public void setResult(List<TrainDTO> result) {
+	public void setResult(List<TimetableDTO> result) {
 		this.result = result;
 	}
 	

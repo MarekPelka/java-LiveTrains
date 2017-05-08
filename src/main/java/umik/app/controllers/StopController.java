@@ -9,10 +9,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import umik.app.model.ApiResult;
+import umik.app.model.ApiResultTimetableDTO;
+import umik.app.model.ApiResultTrainDTO;
 import umik.app.model.Line;
 import umik.app.model.Stop;
 import umik.app.model.Train;
@@ -77,14 +77,14 @@ public class StopController {
 		return s;
 	}
 
-	@RequestMapping("/test")
-	public List<Train> test() {
+	@RequestMapping("/runningTrains")
+	public List<Train> runningTrains() {
 
 		List<Train> out = null;
 		List<Train> temp = null;
 		if (lastcheck == null || lastcheck.getTime() + 10000 < Calendar.getInstance().getTimeInMillis()) {
 			lastcheck = Calendar.getInstance().getTime();
-			temp = apiService.pullDataFromApi();
+			temp = apiService.pullTrainDataFromApi();
 			if(temp.size() != 0)
 				api = temp; 
 			System.out.println("Request to API WARSZAWA");
@@ -93,5 +93,17 @@ public class StopController {
 		if (out == null)
 			out = api;
 		return out;
+	}
+	
+	@RequestMapping("/test")
+	public ApiResultTimetableDTO test() {
+
+		return apiService.pullTimetableDataFromApi(7009, 523);
+	}
+	
+	@RequestMapping("/test1")
+	public List<Train> test1() {
+
+		return apiService.pullTrainDataFromApi();
 	}
 }
