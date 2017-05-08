@@ -66,16 +66,19 @@ public class ApiService {
 		return out;
 	}
 	
-	public ApiResultTimetableDTO pullTimetableDataFromApi(int stopId, int line) {
+	public List<Timetable> pullTimetableDataFromApi(int stopId, int line) {
 		//TODO throw
 		List<Timetable> out = new ArrayList<Timetable>();
 		String api = STOP_URL + STOP_RESOURCE_ID + STOP_CONNECTOR + stopId + STOP_NUMBER_CONNECTOR + STOP_NUMBER + STOP_LINE_CONNECTOR + line + STOP_APIKEY_CONNECTOR + APIKEY;
 		ApiResultTimetableDTO resultSet = restTemplate.getForObject(api, ApiResultTimetableDTO.class);
 		
 		for(TimetableDTO t : resultSet.getResult()) {
-
+			Timetable toList = cast(t);
+			toList.setStopId(stopId);
+			toList.setLineId(line);
+			out.add(toList);
 		}
-		return resultSet;
+		return out;
 	}
 	
 	public Train cast(TrainDTO train) {
@@ -85,8 +88,13 @@ public class ApiService {
 	}
 	
 	public Timetable cast(TimetableDTO t) {
-
-		return null;
+		
+		Timetable out = new Timetable();
+		out.setBrigade(t.getValueDTOs().stream().filter((e) -> e.getKey().equals("brygada")).findFirst().get().getValue());
+		out.setDirection(t.getValueDTOs().stream().filter((e) -> e.getKey().equals("kierunek")).findFirst().get().getValue());
+		out.setRoute(t.getValueDTOs().stream().filter((e) -> e.getKey().equals("trasa")).findFirst().get().getValue());
+		out.setTime(t.getValueDTOs().stream().filter((e) -> e.getKey().equals("czas")).findFirst().get().getValue());
+		return out;
 	}
 
 }

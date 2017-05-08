@@ -15,6 +15,7 @@ import umik.app.model.ApiResultTimetableDTO;
 import umik.app.model.ApiResultTrainDTO;
 import umik.app.model.Line;
 import umik.app.model.Stop;
+import umik.app.model.Timetable;
 import umik.app.model.Train;
 import umik.app.services.ApiService;
 import umik.app.services.StopService;
@@ -53,6 +54,8 @@ public class StopController {
 		List<Line> s = null;
 		if (id == null)
 			id = "100";
+		if (id.contains("R"))
+			id = id.replace("R-", "");
 		try {
 			s = stopService.findStopLines(Integer.parseInt(id));
 		} catch (Exception e) {
@@ -68,6 +71,8 @@ public class StopController {
 		List<Line> s = null;
 		if (id == null)
 			id = "100";
+		if (id.contains("R"))
+			id = id.replace("R-", "");
 		try {
 			s = stopService.findStopLines(Integer.parseInt(id));
 			//TODO For s find schedule and one closest train;
@@ -96,7 +101,7 @@ public class StopController {
 	}
 	
 	@RequestMapping("/test")
-	public ApiResultTimetableDTO test() {
+	public List<Timetable> test() {
 
 		return apiService.pullTimetableDataFromApi(7009, 523);
 	}
