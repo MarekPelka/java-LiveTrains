@@ -81,6 +81,40 @@ public class StopController {
 		}
 		return s;
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/updateTimetable")
+	public String updateTimetable() {
+
+		List<Integer> stopIds;
+		List<Line> linesForCurrentStop;
+		List<Timetable> timetableForStopLine;
+		try {
+			stopIds = stopService.getStopIds();
+			for(int i : stopIds) {
+				System.out.print(i + " ");	
+			}
+			
+			int i = 0;
+			for(int id : stopIds) {
+				System.out.println("TOTAL %: " + i / stopIds.size() * 100);
+				linesForCurrentStop = stopService.findStopLines(id);
+				for(Line l : linesForCurrentStop) {
+					System.out.print(l.getLines() + " ");	
+				}
+				for(Line line : linesForCurrentStop) {
+					timetableForStopLine = apiService.pullTimetableDataFromApi(id, Integer.parseInt(line.getLines()));
+					for(Timetable t : timetableForStopLine) {
+						System.out.print(t.getTime() + " ");	
+					}
+					stopService.saveTimetable(timetableForStopLine);
+				}
+				++i;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "Done!";
+	}
 
 	@RequestMapping("/runningTrains")
 	public List<Train> runningTrains() {
@@ -103,7 +137,7 @@ public class StopController {
 	@RequestMapping("/test")
 	public List<Timetable> test() {
 
-		return apiService.pullTimetableDataFromApi(7009, 523);
+		return apiService.pullTimetableDataFromApi(100, 523);
 	}
 	
 	@RequestMapping("/test1")

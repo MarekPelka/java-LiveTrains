@@ -1,5 +1,7 @@
 package umik.app.impl;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +22,14 @@ public class StopDAOImpl implements StopDAO {
         Stop foo = (Stop) session.get(Stop.class, id);
         session.close();
         return foo;
+	}
+
+	@Override
+	public List<Integer> getStopIds() {
+		StatelessSession session = _sessionFactory.openStatelessSession();
+		@SuppressWarnings("unchecked")
+		List<Integer> out = session.createQuery("SELECT DISTINCT(S.stopId) FROM Stop S").list();
+		session.close();
+		return out;
 	}
 }

@@ -69,7 +69,13 @@ public class ApiService {
 	public List<Timetable> pullTimetableDataFromApi(int stopId, int line) {
 		//TODO throw
 		List<Timetable> out = new ArrayList<Timetable>();
-		String api = STOP_URL + STOP_RESOURCE_ID + STOP_CONNECTOR + stopId + STOP_NUMBER_CONNECTOR + STOP_NUMBER + STOP_LINE_CONNECTOR + line + STOP_APIKEY_CONNECTOR + APIKEY;
+		String stop;
+		if(stopId > 1000)
+			stop = "" + stopId;
+		else
+			stop = "R-0" + stopId;
+		String api = STOP_URL + STOP_RESOURCE_ID + STOP_CONNECTOR + stop + STOP_NUMBER_CONNECTOR + STOP_NUMBER + STOP_LINE_CONNECTOR + line + STOP_APIKEY_CONNECTOR + APIKEY;
+		System.out.println(api);
 		ApiResultTimetableDTO resultSet = restTemplate.getForObject(api, ApiResultTimetableDTO.class);
 		
 		for(TimetableDTO t : resultSet.getResult()) {

@@ -1,5 +1,7 @@
 package umik.app.controllers;
 
+import java.util.List;
+
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,10 +12,9 @@ import umik.app.model.Stop;
 
 @RestController
 @ComponentScan("umik")
-@RequestMapping("/line")
 public class LineController {
 
-	@RequestMapping(method = RequestMethod.GET, value = "/{lineId}/stop/{stopId}")
+	@RequestMapping(method = RequestMethod.GET, value = "/line/{lineId}/stop/{stopId}")
 	public Stop stopInfo(@PathVariable String lineId, @PathVariable String stopId) {
 
 		try {
