@@ -3,11 +3,13 @@ package umik.app.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import umik.app.controllers.StopController;
 import umik.app.dto.TimetableDTO;
 import umik.app.dto.TrainDTO;
 import umik.app.model.ApiResultTimetableDTO;
@@ -54,6 +56,7 @@ public class ApiService {
 	@Value("${stop.to.database.job.url.api.key.connector}")
 	private String STOP_APIKEY_CONNECTOR;
 	
+	static Logger log = Logger.getLogger(ApiService.class.getName());
 
 	public List<Train> pullTrainDataFromApi() {
 		//TODO throw
@@ -69,13 +72,21 @@ public class ApiService {
 	public List<Timetable> pullTimetableDataFromApi(int stopId, int line) {
 		//TODO throw
 		List<Timetable> out = new ArrayList<Timetable>();
-		String stop;
-		if(stopId > 1000)
-			stop = "" + stopId;
+		String stop, stopN;
+		int stopNumber = stopId % 100;
+		//stopId /= 100;
+		if(stopId > 1000){
+			stop = "" + stopId / 100;
+		}
 		else
-			stop = "R-0" + stopId;
-		String api = STOP_URL + STOP_RESOURCE_ID + STOP_CONNECTOR + stop + STOP_NUMBER_CONNECTOR + STOP_NUMBER + STOP_LINE_CONNECTOR + line + STOP_APIKEY_CONNECTOR + APIKEY;
-		System.out.println(api);
+			stop = "R-0" + stopId / 100;
+		
+		if(stopNumber < 10)
+			stopN = "0" + stopNumber;
+		else
+			stopN = "" + stopNumber;
+		String api = STOP_URL + STOP_RESOURCE_ID + STOP_CONNECTOR + stop + STOP_NUMBER_CONNECTOR + stopN + STOP_LINE_CONNECTOR + line + STOP_APIKEY_CONNECTOR + APIKEY;
+		log.info(api);
 		ApiResultTimetableDTO resultSet = restTemplate.getForObject(api, ApiResultTimetableDTO.class);
 		
 		for(TimetableDTO t : resultSet.getResult()) {
@@ -97,7 +108,8 @@ public class ApiService {
 		
 		Timetable out = new Timetable();
 		out.setBrigade(t.getValueDTOs().stream().filter((e) -> e.getKey().equals("brygada")).findFirst().get().getValue());
-		out.setDirection(t.getValueDTOs().stream().filter((e) -> e.getKey().equals("kierunek")).findFirst().get().getValue());
+		String dir = t.getValueDTOs().stream().filter((e) -> e.getKey().equals("kierunek")).findFirst().get().getValue();
+		out.setDirection(dir.replace("ś", "s").replace("ć", "c").replace("ł", "l").replace("ń", "n").replace("Ż", "Z").replace("ę", "e"));
 		out.setRoute(t.getValueDTOs().stream().filter((e) -> e.getKey().equals("trasa")).findFirst().get().getValue());
 		out.setTime(t.getValueDTOs().stream().filter((e) -> e.getKey().equals("czas")).findFirst().get().getValue());
 		return out;
