@@ -16,4 +16,20 @@ public class ApiSingleton {
     public static ApiSingleton getInstance() {
         return INSTANCE;
     }
+    
+    public Date getLastUpdate() {
+		return lastUpdate;
+	}
+
+    public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
+
+    public List<Train> getCurrentTrains() {
+		return currentTrains;
+	}
+
+    public void setCurrentTrains(List<Train> currentTrains) {
+		this.currentTrains = currentTrains;
+	}
 }

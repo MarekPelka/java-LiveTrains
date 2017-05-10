@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import umik.app.dao.LineDAO;
 import umik.app.model.Line;
-import umik.app.model.Stop;
 
 @Repository
 public class LineDAOImpl implements LineDAO{

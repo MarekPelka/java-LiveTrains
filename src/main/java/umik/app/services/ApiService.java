@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import umik.app.controllers.StopController;
 import umik.app.dto.TimetableDTO;
 import umik.app.dto.TrainDTO;
 import umik.app.model.ApiResultTimetableDTO;
