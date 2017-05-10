@@ -33,7 +33,7 @@ public class ScheduledTasks {
 	@Value("${api.to.database.job.time}")
 	private int updateMillis;
 
-	@Scheduled(cron = "${api.to.database.job.cron}")
+	//@Scheduled(cron = "${api.to.database.job.cron}")
 	public void saveApiToDatabase() {
 
 		List<Train> apiResponse = null;
@@ -60,7 +60,7 @@ public class ScheduledTasks {
 				+ (pushTime - pullTime) + "ms");
 	}
 
-	@Scheduled(cron = "${stop.to.database.job.cron}")
+	//@Scheduled(cron = "${stop.to.database.job.cron}")
 	public void saveTimetableToDatabase() {
 		stopService.updateTimetable();
 	}
