@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import umik.app.dao.TrainHistoryDAO;
-import umik.app.model.TrainHistory;
+import umik.app.model.Train;
 
 @Repository
 public class TrainHistoryDAOImpl implements TrainHistoryDAO{
@@ -21,10 +21,10 @@ public class TrainHistoryDAOImpl implements TrainHistoryDAO{
 	private SessionFactory _sessionFactory;
 
 	@Override
-	public void saveListHistory(List<TrainHistory> list) {
+	public void saveListHistory(List<Train> list) {
 		StatelessSession session = _sessionFactory.openStatelessSession();
 		Transaction tx = session.beginTransaction();
-		for(TrainHistory train : list) {
+		for(Train train : list) {
 		    System.out.println("Timestamp: " + train.getTime() +
 		    		"; Status: " + train.getStatus() +
 		    		"; LowFlor: : " + train.isLowFloor() +

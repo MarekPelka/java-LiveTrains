@@ -2,15 +2,12 @@ package umik.app.controllers;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import umik.app.model.Train;
 import umik.app.services.ApiService;
 import umik.app.services.ApiSingleton;
 import umik.app.services.StopService;
@@ -36,8 +33,6 @@ public class ScheduledTasks {
 	//@Scheduled(cron = "${api.to.database.job.cron}")
 	public void saveApiToDatabase() {
 
-		List<Train> apiResponse = null;
-		ApiSingleton api = ApiSingleton.getInstance();
 		log.info("Pull started");
 		Date startTime = Calendar.getInstance().getTime();
 		ApiSingleton.getInstance().runningTrains(apiService);

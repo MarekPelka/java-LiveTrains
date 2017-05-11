@@ -1,26 +1,26 @@
 package umik.app.controllers;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import umik.app.model.Delay;
 import umik.app.model.Line;
 import umik.app.model.Stop;
 import umik.app.model.Timetable;
 import umik.app.model.Train;
 import umik.app.services.ApiService;
 import umik.app.services.ApiSingleton;
+import umik.app.services.DelayService;
 import umik.app.services.StopService;
 import umik.app.services.TrainService;
 
@@ -36,6 +36,9 @@ public class RestfulController {
 	
 	@Autowired
 	private StopService stopService;
+	
+	@Autowired
+	private DelayService delayService;
 	
 	@Autowired
 	private TrainService trainService;
@@ -134,27 +137,36 @@ public class RestfulController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}/lines/info/position")
-	public Map<String, Double> linesPosition(@PathVariable String id) {
+	public List<List<Train>> linesPosition(@PathVariable String id) {
 
 		ApiSingleton.getInstance().runningTrains(apiService);
-		List<Line> s = null;
-		List<Timetable> timetableList = new ArrayList<Timetable>();
-		Map<String, Double> out = new HashMap<String, Double>();
+		List<Line> lineList = null;
+		List<List<Train>> out = new ArrayList<List<Train>>();
 		if (id == null)
 			id = "100";
 		if (id.contains("R"))
 			id = id.replace("R-", "");
 		try {
-			s = stopService.findStopLines(Integer.parseInt(id));
-			timetableList = stopService.getClosestTimetable(s);
-		
-			Stop stop = stopInfo(id);
-			out = trainService.findDistance(stop, timetableList);
-			
+			lineList = stopService.findStopLines(Integer.parseInt(id));
+			for(Line l : lineList) {
+			out.add(trainService.findLinePosition(l.getLines()));	
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		return out;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/delay/{timetablePosition}")
+	public Delay linesPosition(@PathVariable int timetablePosition) {
+
+		Delay d = null;
+		try {
+			d = delayService.getDelay(timetablePosition);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return d;
 	}
 }

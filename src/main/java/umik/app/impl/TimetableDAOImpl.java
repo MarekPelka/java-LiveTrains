@@ -42,4 +42,14 @@ public class TimetableDAOImpl implements TimetableDAO{
 		return out;
 	}
 
+	@Override
+	public int getMaxLine() {
+		StatelessSession session = _sessionFactory.openStatelessSession();
+		
+		@SuppressWarnings("rawtypes")
+		List out = session.createQuery("SELECT MAX(TT.stopId) from Timetable TT")
+				.list();
+		return (int) out.get(0);
+	}
+
 }

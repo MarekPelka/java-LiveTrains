@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="train")
+@Table(name="train_history")
 public class Train implements Serializable{
 
 	private static final long serialVersionUID = 1L;

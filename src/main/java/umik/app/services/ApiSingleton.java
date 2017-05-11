@@ -5,12 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import umik.app.controllers.RestfulController;
 import umik.app.model.Train;
 
 public class ApiSingleton {

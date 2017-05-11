@@ -17,19 +17,19 @@ public class Timetable implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "timetable_id", nullable = false)
-	public int id;
+	private int id;
 	@Column(name = "stop_id", nullable = false, columnDefinition = "int(11)")
-	public int stopId;
+	private int stopId;
 	@Column(name = "line_no", nullable = false, columnDefinition = "int(11)")
-	public int lineId;
+	private int lineId;
 	@Column(name = "brigade", nullable = false, columnDefinition = "varchar(30)")
 	private String brigade;
 	@Column(name = "direction", nullable = false, columnDefinition = "varchar(30)")
-	public String direction;
+	private String direction;
 	@Column(name = "route", nullable = false, columnDefinition = "varchar(30)")
-	public String route;
+	private String route;
 	@Column(name = "time", nullable = false, columnDefinition = "varchar(30)")
-	public String time;
+	private String time;
 
 	public Timetable() {
 	}

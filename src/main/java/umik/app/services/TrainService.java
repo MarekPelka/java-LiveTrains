@@ -1,9 +1,9 @@
 package umik.app.services;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import umik.app.dao.TrainHistoryDAO;
 import umik.app.model.Timetable;
 import umik.app.model.Train;
-import umik.app.model.TrainHistory;
 
 @Service
 public class TrainService {
@@ -31,24 +30,12 @@ public class TrainService {
 		// trainDAO.truncate();
 		// trainDAO.saveList(list);
 		try {
-			trainHistoryDAO.saveListHistory(cast(list));
+			trainHistoryDAO.saveListHistory(list);
 		} catch (ConstraintViolationException e) {
 			log.warn("Duplicate entry - nothing happens");
 		} catch (DataIntegrityViolationException e) {
 			log.warn("Duplicate entry - nothing happens");
 		}
-	}
-
-	@Transactional
-	public List<TrainHistory> cast(List<Train> list) {
-
-		List<TrainHistory> out = new ArrayList<TrainHistory>();
-		for (Train train : list) {
-			TrainHistory o = new TrainHistory(train.getStatus(), train.getFirstLine(), train.getLon(), train.getLines(),
-					train.getTime(), train.getLat(), train.isLowFloor(), train.getBrigade());
-			out.add(o);
-		}
-		return out;
 	}
 
 	@Transactional
@@ -66,5 +53,9 @@ public class TrainService {
 				out.put(outTrain.getLines(), outDouble);
 		}
 		return out;
+	}
+
+	public List<Train> findLinePosition(String lineId) {
+		return ApiSingleton.getInstance().getCurrentTrains().stream().filter((t) -> t.getLines().equals(lineId)).collect(Collectors.toList());
 	}
 }

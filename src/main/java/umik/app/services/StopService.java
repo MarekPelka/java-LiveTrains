@@ -118,10 +118,17 @@ public class StopService {
 		Line lastLine = null;
 		try {
 			stopIds = getStopIds();
-			lastStop = stopIds.get(stopIds.size() -1);
+			lastStop = stopIds.get(stopIds.size() - 1);
 			for (int i : stopIds) {
 				log.info(i + " ");
 			}
+			
+			int maxLineInDatabase = timetableDAO.getMaxLine();
+			if(maxLineInDatabase != lastStop)
+				stopIds = stopIds.subList(stopIds.indexOf(maxLineInDatabase), stopIds.size());
+			else
+				return true;
+			
 			long startTime = Calendar.getInstance().getTimeInMillis();
 			float i = 0;
 			for (int id : stopIds) {
