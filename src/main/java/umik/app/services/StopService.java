@@ -122,12 +122,17 @@ public class StopService {
 			for (int i : stopIds) {
 				log.info(i + " ");
 			}
+			try {
+				int maxLineInDatabase = timetableDAO.getMaxLine();	
+				if(maxLineInDatabase != lastStop)
+					stopIds = stopIds.subList(stopIds.indexOf(maxLineInDatabase), stopIds.size());
+				else
+					return true;
+			} catch(NullPointerException e) {
+				log.warn("Timetable is empty!");
+			}
 			
-			int maxLineInDatabase = timetableDAO.getMaxLine();
-			if(maxLineInDatabase != lastStop)
-				stopIds = stopIds.subList(stopIds.indexOf(maxLineInDatabase), stopIds.size());
-			else
-				return true;
+			
 			
 			long startTime = Calendar.getInstance().getTimeInMillis();
 			float i = 0;
