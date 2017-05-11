@@ -30,18 +30,15 @@ import umik.app.services.TrainService;
 public class RestfulController {
 
 	static Logger log = Logger.getLogger(RestfulController.class.getName());
-	
+
 	@Autowired
 	private ApiService apiService;
-
+	
 	@Autowired
 	private StopService stopService;
 	
 	@Autowired
 	private TrainService trainService;
-	
-	@Value("${api.to.database.job.time}")
-	private int updateMillis;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public Stop stopInfo(@PathVariable String id) {
@@ -85,7 +82,7 @@ public class RestfulController {
 			id = "1";
 		try {
 			Line line = new Line(Integer.parseInt(id), lineId);
-			s = stopService.getTimetable(line);//(Integer.parseInt(id));
+			s = stopService.getTimetable(line);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -114,7 +111,7 @@ public class RestfulController {
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}/lines/info/distance")
 	public Map<String, Double> linesDistance(@PathVariable String id) {
 
-		runningTrains();
+		ApiSingleton.getInstance().runningTrains(apiService);
 		List<Line> s = null;
 		List<Timetable> timetableList = new ArrayList<Timetable>();
 		Map<String, Double> out = new HashMap<String, Double>();
@@ -136,41 +133,28 @@ public class RestfulController {
 		return out;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/updateTimetable")
-	public String updateTimetable() {
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}/lines/info/position")
+	public Map<String, Double> linesPosition(@PathVariable String id) {
 
-		if(stopService.updateTimetable())
-			return "Done!";
-		else
-			return "Failed!";
-	}
-
-	@RequestMapping("/runningTrains")
-	public List<Train> runningTrains() {
-
-		List<Train> apiResponse = null;
-		ApiSingleton api = ApiSingleton.getInstance();
+		ApiSingleton.getInstance().runningTrains(apiService);
+		List<Line> s = null;
+		List<Timetable> timetableList = new ArrayList<Timetable>();
+		Map<String, Double> out = new HashMap<String, Double>();
+		if (id == null)
+			id = "100";
+		if (id.contains("R"))
+			id = id.replace("R-", "");
+		try {
+			s = stopService.findStopLines(Integer.parseInt(id));
+			timetableList = stopService.getClosestTimetable(s);
 		
-		if (api.getLastUpdate() == null || api.getLastUpdate().getTime() + updateMillis < Calendar.getInstance().getTimeInMillis()) {
-			api.setLastUpdate(Calendar.getInstance().getTime());
-			apiResponse = apiService.pullTrainDataFromApi();
-			if (apiResponse.size() != 0)
-				api.setCurrentTrains(apiResponse);
-			log.info("Request to API WARSZAWA");
+			Stop stop = stopInfo(id);
+			out = trainService.findDistance(stop, timetableList);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		return api.getCurrentTrains();
-	}
-
-	@RequestMapping("/test")
-	public List<Timetable> test() {
-
-		return apiService.pullTimetableDataFromApi(100, 10);
-	}
-
-	@RequestMapping("/test1")
-	public List<Train> test1() {
-
-		return apiService.pullTrainDataFromApi();
+		
+		return out;
 	}
 }

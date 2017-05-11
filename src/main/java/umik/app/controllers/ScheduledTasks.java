@@ -40,21 +40,9 @@ public class ScheduledTasks {
 		ApiSingleton api = ApiSingleton.getInstance();
 		log.info("Pull started");
 		Date startTime = Calendar.getInstance().getTime();
+		ApiSingleton.getInstance().runningTrains(apiService);
 		long pullTime = Calendar.getInstance().getTimeInMillis();
-		if (api.getLastUpdate() == null
-				|| api.getLastUpdate().getTime() + updateMillis < Calendar.getInstance().getTimeInMillis()) {
-			api.setLastUpdate(startTime);
-			apiResponse = apiService.pullTrainDataFromApi();
-
-			pullTime = Calendar.getInstance().getTimeInMillis();
-			if (apiResponse.size() != 0) {
-
-				api.setCurrentTrains(apiResponse);
-				trainService.saveApiInTrainHistory(ApiSingleton.getInstance().getCurrentTrains());
-			}
-
-			log.info("Request to API WARSZAWA");
-		}
+		trainService.saveApiInTrainHistory(ApiSingleton.getInstance().getCurrentTrains());
 		long pushTime = Calendar.getInstance().getTimeInMillis();
 		log.info("Pulling running trains time: " + (pullTime - startTime.getTime()) + "ms; Push time: "
 				+ (pushTime - pullTime) + "ms");
