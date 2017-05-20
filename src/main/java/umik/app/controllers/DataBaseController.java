@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import umik.app.model.Line;
-import umik.app.model.Stop;
 import umik.app.model.Timetable;
 import umik.app.model.Train;
 import umik.app.services.ApiService;
@@ -68,5 +67,14 @@ public class DataBaseController {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/truncateTimetable")
+	public String truncateTimetable() {
+
+		if(stopService.truncateTimetable())
+			return "Done!";
+		else
+			return "Failed!";
 	}
 }

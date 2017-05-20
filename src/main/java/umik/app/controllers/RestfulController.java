@@ -92,7 +92,6 @@ public class RestfulController {
 		return s;
 	}
 
-	// TODO Consider - too many injections
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}/lines/info")
 	public List<Timetable> stopLinesInfo(@PathVariable String id) {
 

@@ -69,5 +69,9 @@ java -jar target/LiveTrains-0.0.2.jar
 
 ### `/updateTimetable`
 - Forces update to Timetable database
+### `/truncateTimetable`
+- Deletes everything from Timetable database
 ### `/runningTrains`
 - All currently running trams
+### `/updateTimetable/line/{lineId}/stop/{stopId}`
+- Forces update to Timetable for given stopId and lineId

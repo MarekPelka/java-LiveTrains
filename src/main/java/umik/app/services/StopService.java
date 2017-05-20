@@ -53,7 +53,7 @@ public class StopService {
 	public void saveTimetable(List<Timetable> list) {
 		timetableDAO.saveList(list);
 	}
-	
+
 	@Transactional(readOnly = true)
 	public List<Timetable> getTimetable(Line line) {
 		return timetableDAO.getTimetable(line);
@@ -65,9 +65,7 @@ public class StopService {
 		for (Line l : list) {
 			List<Timetable> t = timetableDAO.getTimetable(l);
 			Calendar now = Calendar.getInstance(TimeZone.getTimeZone("Europe/Warsaw"));
-			// now.set(2017, 5, 9, 14, 0);
-			// Filter hours , minutes
-			// SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
 			Timetable outToList = t.stream()
 					.filter((pos) -> Integer.parseInt(pos.getTime().split(":")[0]) >= now.get(Calendar.HOUR_OF_DAY))
 					.filter((pos) -> Integer.parseInt(pos.getTime().split(":")[0]) == now.get(Calendar.HOUR_OF_DAY)
@@ -78,11 +76,6 @@ public class StopService {
 							Integer.parseInt(f2.getTime().split(":")[0]) * 100
 									+ Integer.parseInt(f2.getTime().split(":")[1])))
 					.orElse(new Timetable());
-			// .min((f1, f2) ->
-			// Integer.compare(Integer.parseInt(f1.getTime().split(":")[1]),
-			// Integer.parseInt(f2.getTime().split(":")[1])))
-			;
-
 			out.add(outToList);
 		}
 		if (out.stream().map(o -> o.getTime()).distinct().limit(2).count() <= 1) {
@@ -91,9 +84,6 @@ public class StopService {
 				Calendar now = Calendar.getInstance();
 				now.set(Calendar.HOUR_OF_DAY, 0);
 				now.set(Calendar.MINUTE, 0);
-				// Filter hours , minutes
-				// SimpleDateFormat dateFormat = new
-				// SimpleDateFormat("HH:mm:ss");
 				Timetable outToList = t.stream()
 						.filter((pos) -> Integer.parseInt(pos.getTime().split(":")[0]) >= now.get(Calendar.HOUR_OF_DAY))
 						.filter((pos) -> Integer.parseInt(pos.getTime().split(":")[0]) == now.get(Calendar.HOUR_OF_DAY)
@@ -124,17 +114,15 @@ public class StopService {
 				log.info(i + " ");
 			}
 			try {
-				int maxLineInDatabase = timetableDAO.getMaxLine();	
-				if(maxLineInDatabase != lastStop)
+				int maxLineInDatabase = timetableDAO.getMaxLine();
+				if (maxLineInDatabase != lastStop)
 					stopIds = stopIds.subList(stopIds.indexOf(maxLineInDatabase), stopIds.size());
 				else
 					return true;
-			} catch(NullPointerException e) {
+			} catch (NullPointerException e) {
 				log.warn("Timetable is empty!");
 			}
-			
-			
-			
+
 			long startTime = Calendar.getInstance().getTimeInMillis();
 			float i = 0;
 			for (int id : stopIds) {
@@ -142,7 +130,7 @@ public class StopService {
 				log.info("Time passed: " + (Calendar.getInstance().getTimeInMillis() - startTime));
 				long cTime = Calendar.getInstance().getTimeInMillis();
 				log.warn("Estimated time: " + ((cTime - startTime) / i * stopIds.size()));
-				
+
 				linesForCurrentStop = findStopLines(id);
 				for (Line l : linesForCurrentStop) {
 					log.info(l.getLines() + " ");
@@ -150,8 +138,7 @@ public class StopService {
 				float j = 0;
 				for (Line line : linesForCurrentStop) {
 					log.info("FOR STOP: " + id + "; %: " + (float) j / linesForCurrentStop.size() * 100f);
-					timetableForStopLine = apiService.pullTimetableDataFromApi(id,
-							Integer.parseInt(line.getLines()));
+					timetableForStopLine = apiService.pullTimetableDataFromApi(id, Integer.parseInt(line.getLines()));
 					for (Timetable t : timetableForStopLine) {
 						log.info(t.getTime() + " ");
 					}
@@ -166,18 +153,23 @@ public class StopService {
 			e.printStackTrace();
 		}
 		List<Line> test = findStopLines(lastStop);
-		lastLine = test.get(test.size()-1);
-		if(timetableDAO.getTimetable(lastLine).size() > 0)
+		lastLine = test.get(test.size() - 1);
+		if (timetableDAO.getTimetable(lastLine).size() > 0)
 			return true;
 		else
 			return false;
 	}
-	
+
 	@Transactional
 	public boolean updateLine(Line line) {
-		List<Timetable> list = apiService.pullTimetableDataFromApi(line.getStopId(),
-				Integer.parseInt(line.getLines()));
+		List<Timetable> list = apiService.pullTimetableDataFromApi(line.getStopId(), Integer.parseInt(line.getLines()));
 		timetableDAO.updateLine(line, list);
+		return true;
+	}
+
+	@Transactional
+	public boolean truncateTimetable() {
+		timetableDAO.truncate();
 		return true;
 	}
 }
