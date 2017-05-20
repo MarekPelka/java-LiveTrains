@@ -76,6 +76,6 @@ java -jar target/LiveTrains-0.0.2.jar
 ### `/updateTimetable/line/{lineId}/stop/{stopId}`
 - Forces update to Timetable for given stopId and lineId
 ### `/history`
-- Shows info is train history being save to database
+- Shows info is train history being saved to database
 ### `/history/t`
-- Swiches saving history
+- Switches saving history
