@@ -15,6 +15,7 @@ public class ApiSingleton {
 	
 	private static final ApiSingleton INSTANCE = new ApiSingleton();
 
+	private boolean saveHistory;
 	private Date lastUpdate;
 	private List<Train> currentTrains;
 	
@@ -37,7 +38,15 @@ public class ApiSingleton {
         return INSTANCE;
     }
     
-    public Date getLastUpdate() {
+    public boolean isSaveHistory() {
+		return saveHistory;
+	}
+
+    public void setSaveHistory(boolean saveHistory) {
+		this.saveHistory = saveHistory;
+	}
+
+	public Date getLastUpdate() {
 		return lastUpdate;
 	}
 

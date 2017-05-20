@@ -77,4 +77,23 @@ public class DataBaseController {
 		else
 			return "Failed!";
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/history")
+	public String history() {
+
+		if(ApiSingleton.getInstance().isSaveHistory())
+			return "History is being saved to database!";
+		else
+			return "History is NOT being saved!";
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/history/t")
+	public String historyToggle() {
+
+		ApiSingleton.getInstance().setSaveHistory(!ApiSingleton.getInstance().isSaveHistory());
+		if(ApiSingleton.getInstance().isSaveHistory())
+			return "NOW history is being saved to database!";
+		else
+			return "NOW history is NOT being saved!";
+	}
 }

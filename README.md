@@ -75,3 +75,7 @@ java -jar target/LiveTrains-0.0.2.jar
 - All currently running trams
 ### `/updateTimetable/line/{lineId}/stop/{stopId}`
 - Forces update to Timetable for given stopId and lineId
+### `/history`
+- Shows info is train history being save to database
+### `/history/t`
+- Swiches saving history

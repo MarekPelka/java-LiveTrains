@@ -38,7 +38,10 @@ public class ScheduledTasks {
 		Date startTime = Calendar.getInstance().getTime();
 		ApiSingleton.getInstance().runningTrains(apiService);
 		long pullTime = Calendar.getInstance().getTimeInMillis();
-		trainService.saveApiInTrainHistory(ApiSingleton.getInstance().getCurrentTrains());
+		if(ApiSingleton.getInstance().isSaveHistory())
+			trainService.saveApiInTrainHistory(ApiSingleton.getInstance().getCurrentTrains());
+		else
+			log.info("History is not saved");	
 		long pushTime = Calendar.getInstance().getTimeInMillis();
 		log.info("Pulling running trains time: " + (pullTime - startTime.getTime()) + "ms; Push time: "
 				+ (pushTime - pullTime) + "ms");
