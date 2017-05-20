@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import umik.app.model.Line;
 import umik.app.model.Stop;
 import umik.app.model.Timetable;
 import umik.app.model.Train;
@@ -58,14 +59,14 @@ public class DataBaseController {
 		return apiService.pullTrainDataFromApi();
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/line/{lineId}/stop/{stopId}")
-	public Stop stopInfo(@PathVariable String lineId, @PathVariable String stopId) {
+	@RequestMapping(method = RequestMethod.GET, value = "/updateTimetable/line/{lineId}/stop/{stopId}")
+	public boolean updateLine(@PathVariable String lineId, @PathVariable String stopId) {
 
 		try {
-			//TODO get schedule for lineId on stopId
+			return stopService.updateLine(new Line(Integer.parseInt(stopId), stopId));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return false;
 	}
 }

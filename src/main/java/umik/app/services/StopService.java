@@ -172,4 +172,12 @@ public class StopService {
 		else
 			return false;
 	}
+	
+	@Transactional
+	public boolean updateLine(Line line) {
+		List<Timetable> list = apiService.pullTimetableDataFromApi(line.getStopId(),
+				Integer.parseInt(line.getLines()));
+		timetableDAO.updateLine(line, list);
+		return true;
+	}
 }
