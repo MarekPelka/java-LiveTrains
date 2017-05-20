@@ -19,9 +19,9 @@ import umik.app.services.StopService;
 
 @RestController
 @ComponentScan("umik")
-public class LineController {
+public class DataBaseController {
 
-	static Logger log = Logger.getLogger(LineController.class.getName());
+	static Logger log = Logger.getLogger(DataBaseController.class.getName());
 	
 	@Autowired
 	private ApiService apiService;

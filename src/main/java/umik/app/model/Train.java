@@ -13,11 +13,9 @@ public class Train implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "status", nullable = false, columnDefinition = "varchar(30)")
+	@Column(name = "status", nullable = true, columnDefinition = "varchar(30)")
 	private String status;
-	@Id
-	@Column(name = "first_line", nullable = false, columnDefinition = "varchar(30)")
+	@Column(name = "first_line", nullable = true, columnDefinition = "varchar(30)")
 	private String firstLine;
 	@Id
 	@Column(name = "lon", nullable = false, columnDefinition = "double")
@@ -31,8 +29,7 @@ public class Train implements Serializable{
 	@Id
 	@Column(name = "lat", nullable = false, columnDefinition = "double")
 	public double lat;
-	@Id
-	@Column(name = "low_floor", nullable = false, columnDefinition = "BIT(1)")
+	@Column(name = "low_floor", nullable = true, columnDefinition = "BIT(1)")
 	private boolean lowFloor;
 	@Id
 	@Column(name = "brigade", nullable = false, columnDefinition = "varchar(30)")

@@ -3,6 +3,7 @@ package umik.app.services;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class StopService {
 		List<Timetable> out = new ArrayList<Timetable>();
 		for (Line l : list) {
 			List<Timetable> t = timetableDAO.getTimetable(l);
-			Calendar now = Calendar.getInstance();
+			Calendar now = Calendar.getInstance(TimeZone.getTimeZone("Europe/Warsaw"));
 			// now.set(2017, 5, 9, 14, 0);
 			// Filter hours , minutes
 			// SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
