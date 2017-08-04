@@ -4,12 +4,11 @@ Rest server for interfacing with the mobile application. Information is download
 The server provides information about Warsaw tram network. This server allows for decreasing amount of calls to API.
 The project was created with **Spring Boot** framework.
 
-[Application][3] is deployed to [Heroku][4].
+Application is deployed to [Heroku][3].
 
 [1]: https://api.um.warszawa.pl/
 [2]: awseducate.com/
-[3]: https://still-reef-32346.herokuapp.com/stop/100604
-[4]: https://www.heroku.com/
+[3]: https://www.heroku.com/
 
 ## Build: 
 
